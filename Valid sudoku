@@ -1,0 +1,52 @@
+class Solution:
+    def get_char_freq(self, window): 
+        char_freq = {0: -1}
+
+        for char in window: 
+            if char == ".": 
+                continue 
+
+            if char in char_freq: 
+                char_freq[char] += 1
+            else: 
+                char_freq[char] = 1
+
+        return char_freq 
+
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        
+        # rows
+        for i in range(9): 
+
+            if max(self.get_char_freq(board[i]).values()) > 1:
+                return False   
+
+        print()
+
+        # columns
+        for i in range(9): 
+
+            column = []
+            for j in range(9): 
+                column.append(board[j][i])
+
+            if max(self.get_char_freq(column).values()) > 1: 
+                return False
+
+        print()
+
+        # groups
+        for i in range(9): 
+            start_x = (i % 3) * 3
+            start_y = (i // 3) * 3
+
+            group = [board[start_y][start_x], board[start_y][start_x + 1], board[start_y][start_x + 2], 
+                    board[start_y + 1][start_x], board[start_y + 1][start_x + 1], board[start_y + 1][start_x + 2],
+                    board[start_y + 2][start_x], board[start_y + 2][start_x + 1], board[start_y + 2][start_x + 2]]
+
+            if max(self.get_char_freq(group).values()) > 1: 
+                return False
+        
+
+
+        return True
